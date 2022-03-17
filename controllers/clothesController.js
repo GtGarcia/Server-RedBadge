@@ -1,28 +1,28 @@
 const router = require('express').Router();
-const { ShoeModel } = require('../model');
+const { ClothesModel } = require('../model');
 let validateJWT = require('../middleware/validate-jwt');
 
 router.post('/create', validateJWT, async (req,res) => {
 
-    let { shoeName, brandName, size, condition, samePair, buyPrice, sellPrice } = req.body;
+    let { clothesName, brandName, size, condition, sameClothes, buyPrice, sellPrice } = req.body;
 
-    let shoeCreate = {
-        shoeName,
+    let clothesCreate = {
+        clothesName,
         brandName,
         size,
         condition,
-        samePair,
+        sameClothes,
         buyPrice,
         sellPrice,
         owner_id: req.user.id
 
     }
     try {
-        const newShoe = await ShoeModel.create(shoeCreate);
-        // console.log(shoeCreate)
+        const newClothes = await ClothesModel.create(clothesCreate);
+        console.log(clothesCreate)
         res.status(200).json({
-            message: 'Shoe Listing Created!',
-            shoe: newShoe
+            message: 'Clothes Listing Created!',
+            clothes: newClothes
         })
     } catch (err) {
         res.status(500).json({ error: err});
@@ -32,7 +32,7 @@ router.post('/create', validateJWT, async (req,res) => {
 
 router.get('/', async (req,res) => {
     try{
-        const listing = await ShoeModel.findAll();
+        const listing = await ClothesModel.findAll();
         res.status(200).json({
             message: 'Boom! Here you go!',
             listing
@@ -46,63 +46,66 @@ router.get('/mine', validateJWT, async(req,res) =>{
     let { id } = req.user
 
     try{
-        const userShoe = await ShoeModel.findAll({
+        const userClothes = await ClothesModel.findAll({
             where: {
                 owner_id: id
             }
         })
-        res.status(200).json(userShoe);
+        res.status(200).json(userClothes);
     } catch(err) {
         res.status(500).json({ error: err })
     }
 })
 
-//? UPDATE SHOE
+//? UPDATE CLOTHES
 
 router.put('/:id', validateJWT, async (req,res) => {
-    let {shoeName, brandName, size, condition, samePair, buyPrice, sellPrice} = req.body
+    let {clothesName, brandName, size, condition, sameClothes, buyPrice, sellPrice} = req.body
 
-    const shoeID = req.params.id;
+    const clothesID = req.params.id;
     const ownerid = req.user.id;
 
     const query = {
         where: {
-            id: shoeID,
+            id: clothesID,
             owner_id: ownerid
         }
     }
 
-    let newShoe = {
-        shoeName,
+    let newClothes = {
+        clothesName,
         brandName,
         size,
         condition,
-        samePair,
+        sameClothes,
         buyPrice,
         sellPrice,
     }
 
     try {
-        const updateShoee = await ShoeModel.update(newShoe, query);
-        res.status(200).json({ updateShoee, message: "Hey! Shoe item has been updated!"})
+        const updateClothes = await ClothesModel.update(newClothes, query);
+        res.status(200).json({updateClothes, message: "Clothes item has been updated!"})
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err });
     }
 })
 
+
+//! DELETE 
+
 router.delete('/:id', validateJWT, async (req,res) => {
-    const shoeId = req.params.id;
+    const clothesId = req.params.id;
     const ownerid = req.user.id;
 
     try {
         const query = {
             where: {
-                id: shoeId,
+                id: clothesId,
                 owner_id: ownerid,
             },
         }
-        await ShoeModel.destroy(query)
+        await ClothesModel.destroy(query)
         res.status(201).json({ message: 'Item has been delted!' })
     } catch (err) {
         res.status(500).json({ message: `Opps! heres you error ${err}`})

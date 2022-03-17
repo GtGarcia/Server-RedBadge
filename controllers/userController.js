@@ -4,6 +4,9 @@ const { UniqueConstraintError } = require('sequelize/lib/errors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+//Void
+
+
 router.post('/register', async (req,res) => {
     
     try {
@@ -46,7 +49,7 @@ router.post('/login', async (req,res) => {
     let { email, password } = req.body;
 
     try {
-        const loginUser = await UserModel.fineOne({
+        const loginUser = await UserModel.findOne({
             where: { email }
         })
 

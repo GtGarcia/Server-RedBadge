@@ -14,9 +14,14 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "@adminjs/express": "^4.1.0",
+    "@adminjs/sequelize": "^2.1.4",
+    "adminjs": "^5.7.3",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
