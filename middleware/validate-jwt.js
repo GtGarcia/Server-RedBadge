@@ -37,5 +37,6 @@ const validateJWT = async(req,res,next) => {
         console.log(err)
     }
 }
+//test
 
 module.exports = validateJWT;
